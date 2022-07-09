@@ -1,0 +1,4 @@
+Ansible-Node-1 ansible_host=172.31.10.35 ansible_user=ec2-user
+Ansible-Node-2 ansible_host=172.31.5.169 ansible_user=ec2-user
+Ansible-Node-2 ansible_host=172.31.7.232 ansible_user=ec2-user
+Ansible-Node-1 ansible_host=172.31.6.214 ansible_user=ec2-user
