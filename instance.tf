@@ -6,6 +6,7 @@ resource "aws_instance" "ansible_host" {
   ami = "ami-035c5dc086849b5de"
   instance_type = "t2.micro"
   key_name = "id"
+  private_ip = "172.16.1.23"
   subnet_id = "${aws_subnet.main-public-1.id}"
   vpc_security_group_ids = [ "${aws_security_group.allow-ssh.id}" ]
 
@@ -75,7 +76,7 @@ resource "aws_instance" "ansible_target_1" {
   instance_type = "t2.micro"
   key_name = "id"
   vpc_security_group_ids = [ "${aws_security_group.allow-ssh.id}", "${aws_security_group.allow-http.id}" ]
-  subnet_id = "${aws_subnet.main-public-1.id}"
+  subnet_id = "${aws_subnet.main-private-1.id}"
 
   provisioner "local-exec" {
     command = "echo ${self.tags.Name} ansible_host=${self.private_ip} ansible_user=ec2-user >> inventory.txt"
