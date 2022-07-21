@@ -44,11 +44,15 @@ module "alb" {
       port               = 80
       protocol           = "HTTP"
       target_group_index = 0
-    },
-     {
-      port               = 81
-      protocol           = "HTTP"
-      target_group_index = 1
+    }
+  ]
+
+  https_listeners = [
+    {
+      port                 = 81
+      protocol             = "HTTPS"
+      certificate_arn      = "arn:aws:acm:eu-west-2:065222102616:certificate/4c92a799-319f-4702-9acc-290c49d4944e"
+      target_group_index   = 1
     }
   ]
 }
