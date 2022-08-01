@@ -39,3 +39,13 @@ Ansible-Node-1 ansible_host=172.16.4.19 ansible_user=ec2-user
 Ansible-Node-2 ansible_host=172.16.1.83 ansible_user=ec2-user
 Ansible-Node-2 ansible_host=172.16.1.25 ansible_user=ec2-user
 Ansible-Node-1 ansible_host=172.16.4.87 ansible_user=ec2-user
+Ansible-Node-1 ansible_host=172.16.4.119 ansible_user=ec2-user
+Ansible-Node-2 ansible_host=172.16.1.27 ansible_user=ec2-user
+Ansible-Node-2 ansible_host=172.16.1.166 ansible_user=ec2-user
+Ansible-Node-1 ansible_host=172.16.4.221 ansible_user=ec2-user
+Ansible-Node-1 ansible_host=172.16.4.159 ansible_user=ec2-user
+Ansible-Node-2 ansible_host=172.16.1.107 ansible_user=ec2-user
+Ansible-Node-2 ansible_host=172.16.1.92 ansible_user=ec2-user
+Ansible-Node-1 ansible_host=172.16.4.100 ansible_user=ec2-user
+Ansible-Node-2 ansible_host=172.16.1.118 ansible_user=ec2-user
+Ansible-Node-1 ansible_host=172.16.4.235 ansible_user=ec2-user
