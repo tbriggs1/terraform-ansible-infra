@@ -6,7 +6,7 @@ resource "aws_instance" "ansible_host" {
   ami = "ami-035c5dc086849b5de"
   instance_type = "t2.micro"
   key_name = "id"
-  private_ip = "172.16.1.23"
+  private_ip = "172.16.1.98"
   subnet_id = "${aws_subnet.main-public-1.id}"
   vpc_security_group_ids = [ "${aws_security_group.allow-ssh.id}" ]
 
