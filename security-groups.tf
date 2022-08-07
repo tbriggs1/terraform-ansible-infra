@@ -48,6 +48,13 @@ resource "aws_security_group" "allow-http" {
     to_port = 443
   }
 
+  ingress {
+    cidr_blocks = ["0.0.0.0/0"]
+    from_port = 2377
+    protocol = "tcp"
+    to_port = 2377
+  }
+
 
   ingress {
     cidr_blocks = ["0.0.0.0/0"]

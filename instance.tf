@@ -110,3 +110,23 @@ resource "aws_instance" "ansible_target_2" {
     Name = "Ansible-Node-2"
   }
 }
+
+resource "aws_instance" "ansible_target_3" {
+  ami = "ami-035c5dc086849b5de"
+  instance_type = "t2.micro"
+  key_name = "id"
+  subnet_id = "${aws_subnet.main-public-1.id}"
+  vpc_security_group_ids = [ "${aws_security_group.allow-ssh.id}", "${aws_security_group.allow-http.id}" ]
+
+  provisioner "local-exec" {
+    command = "echo ${self.tags.Name} ansible_host=${self.private_ip} ansible_user=ec2-user >> inventory.txt"
+  }
+
+  provisioner "local-exec" {
+    command = "echo ${self.private_ip} >> private_ips.txt"
+  }
+
+  tags = {
+    Name = "Ansible-Node-3"
+  }
+}
