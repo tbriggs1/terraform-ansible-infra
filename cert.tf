@@ -1,5 +1,5 @@
 resource "aws_acm_certificate" "cert" {
-  domain_name = "cropmanagementdev.com"
+  domain_name       = "cropmanagementdev.com"
   validation_method = "DNS"
   depends_on = [
     module.alb
@@ -44,12 +44,12 @@ resource "aws_acm_certificate_validation" "cert-val" {
 
 resource "aws_route53_record" "www" {
   zone_id = data.aws_route53_zone.cert.zone_id
-  name = "cropmanagementdev.com"
-  type = "A"
+  name    = "cropmanagementdev.com"
+  type    = "A"
 
   alias {
-    name = module.alb.lb_dns_name
-    zone_id = module.alb.lb_zone_id
+    name                   = module.alb.lb_dns_name
+    zone_id                = module.alb.lb_zone_id
     evaluate_target_health = true
   }
 }
