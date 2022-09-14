@@ -1,4 +1,5 @@
-resource "aws_vpc" "main" {
+resource "aws_vpc" "vpc_master" {
+  provider             = aws.region-master
   cidr_block           = "172.16.0.0/16"
   instance_tenancy     = "default"
   enable_dns_support   = "true"
@@ -6,116 +7,67 @@ resource "aws_vpc" "main" {
   enable_classiclink   = "false"
 
   tags = {
-    Name = "main"
+    Name = "master-vpc-jenkins"
   }
 }
 
-#Subnets
-resource "aws_subnet" "main-public-1" {
-  vpc_id                  = aws_vpc.main.id
-  cidr_block              = "172.16.1.0/24"
-  map_public_ip_on_launch = "true"
-  availability_zone       = "eu-west-2a"
+resource "aws_vpc" "vpc_worker" {
+  provider             = aws.region-worker
+  cidr_block           = "10.0.0.0/16"
+  instance_tenancy     = "default"
+  enable_dns_support   = "true"
+  enable_dns_hostnames = "true"
+  enable_classiclink   = "false"
 
   tags = {
-    Name = "main-public-1"
-  }
-}
-
-
-resource "aws_subnet" "main-public-2" {
-  vpc_id                  = aws_vpc.main.id
-  cidr_block              = "172.16.2.0/24"
-  map_public_ip_on_launch = "true"
-  availability_zone       = "eu-west-2b"
-
-  tags = {
-    Name = "main-public-2"
-  }
-}
-
-
-resource "aws_subnet" "main-public-3" {
-  vpc_id                  = aws_vpc.main.id
-  cidr_block              = "172.16.3.0/24"
-  map_public_ip_on_launch = "true"
-  availability_zone       = "eu-west-2c"
-
-  tags = {
-    Name = "main-public-3"
-  }
-}
-
-# Private Subnets
-resource "aws_subnet" "main-private-1" {
-  vpc_id                  = aws_vpc.main.id
-  cidr_block              = "172.16.4.0/24"
-  map_public_ip_on_launch = "false"
-  availability_zone       = "eu-west-2a"
-
-  tags = {
-    Name = "main-private-1"
-  }
-}
-
-
-resource "aws_subnet" "main-private-2" {
-  vpc_id                  = aws_vpc.main.id
-  cidr_block              = "172.16.5.0/24"
-  map_public_ip_on_launch = "false"
-  availability_zone       = "eu-west-2b"
-
-  tags = {
-    Name = "main-private-2"
-  }
-}
-
-
-resource "aws_subnet" "main-private-3" {
-  vpc_id                  = aws_vpc.main.id
-  cidr_block              = "172.16.6.0/24"
-  map_public_ip_on_launch = "false"
-  availability_zone       = "eu-west-2c"
-
-  tags = {
-    Name = "main-private-3"
+    Name = "master-vpc-jenkins"
   }
 }
 
 # Internet GW
-resource "aws_internet_gateway" "main-gw" {
-  vpc_id = aws_vpc.main.id
+resource "aws_internet_gateway" "master-gw" {
+  provider = aws.region-master
+  vpc_id   = aws_vpc.vpc_master.id
 
   tags = {
-    Name = "main"
+    Name = "master"
   }
 }
 
-# Route Tables
-resource "aws_route_table" "main-public" {
-  vpc_id = aws_vpc.main.id
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.main-gw.id
-  }
+resource "aws_internet_gateway" "worker-gw" {
+  provider = aws.region-worker
+  vpc_id = aws_vpc.vpc_worker.id
 
   tags = {
-    Name = "main-public-1"
+    Name = "worker"
   }
 }
 
-# Route association publics
-resource "aws_route_table_association" "main-public-1-a" {
-  subnet_id      = aws_subnet.main-public-1.id
-  route_table_id = aws_route_table.main-public.id
+data "aws_availability_zones" "azs" {
+  provider = aws.region-master
+  state    = "available"
 }
 
-resource "aws_route_table_association" "main-public-2-a" {
-  subnet_id      = aws_subnet.main-public-2.id
-  route_table_id = aws_route_table.main-public.id
+# Subnets
+resource "aws_subnet" "subnet_1" {
+  provider          = aws.region-master
+  availability_zone = element(data.aws_availability_zones.azs.names, 0)
+  vpc_id            = aws_vpc.vpc_master.id
+  cidr_block        = "172.16.1.0/24"
 }
 
-resource "aws_route_table_association" "main-public-3-a" {
-  subnet_id      = aws_subnet.main-public-3.id
-  route_table_id = aws_route_table.main-public.id
+# Subnets
+resource "aws_subnet" "subnet_2" {
+  provider          = aws.region-master
+  availability_zone = element(data.aws_availability_zones.azs.names, 1)
+  vpc_id            = aws_vpc.vpc_master.id
+  cidr_block        = "172.16.2.0/24"
 }
+
+# Subnets
+resource "aws_subnet" "subnet_3" {
+  provider   = aws.region-worker
+  vpc_id     = aws_vpc.vpc_worker.id
+  cidr_block = "10.0.1.0/24"
+}
+

@@ -11,11 +11,11 @@ variable "ami" {
 }
 
 variable "region-master" {
-  type = string
+  type    = string
   default = "eu-west-2"
 }
 
 variable "region-worker" {
-  type = string
+  type    = string
   default = "eu-west-1"
 }
